@@ -31,9 +31,10 @@ O projeto também suporta a conversão de binário para outras bases numéricas,
 
 ---
 
-## 📷 Visual
+## 🎥 Demonstração
+Clique na imagem para assistir ao vídeo:
+[![Clique para assistir ao vídeo](https://github.com/user-attachments/assets/b73df183-91f0-4864-8f35-f551f5f837ae)](https://github.com/devrafcks/UniByte/blob/main/Projeto%20-%20video.mp4)
 
-![UniByte Screenshot](https://via.placeholder.com/800x400.png)
 
 ---
 
