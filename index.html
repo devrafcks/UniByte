@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniByte</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon_io/favicon-16x16.png">
+  <style>
+    :root {
+      --bg: #121212;
+      --text: #ffffff;
+      --accent: #00ffc8;
+      --card: #1e1e1e;
+      --input-bg: #2a2a2a;
+      --input-text: #ffffff;
+      --output-bg: #252525;
+      --shadow: rgba(0, 255, 200, 0.2);
+      --button-text: #121212;
+      --button-bg: var(--accent);
+      --overflow-bg: var(--card); 
+      --overflow-shadow: var(--shadow);
+    }
+
+    [data-theme="light"] {
+      --bg: #f5f7fa;
+      --text: #333333;
+      --accent: #0077cc;
+      --card: #ffffff;
+      --input-bg: #f0f0f0;
+      --input-text: #333333;
+      --output-bg: #f8f9fa;
+      --shadow: rgba(0, 119, 204, 0.1);
+      --button-text: #0077cc;
+      --button-bg: var(--bg);
+      --overflow-bg: var(--card); 
+      --overflow-shadow: var(--shadow);
+    }
+
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    * {
+        scrollbar-width: thin; 
+        scrollbar-color: var(--accent) var(--overflow-bg); 
+      }
+      
+      *::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      *::-webkit-scrollbar-thumb {
+        background-color: var(--accent);
+        border-radius: 4px;
+      }
+      
+      *::-webkit-scrollbar-track {
+        background-color: var(--overflow-bg);
+      }
+      
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      background: var(--card);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px var(--shadow);
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: var(--input-bg);
+      color: var(--input-text);
+      resize: none;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(0, 255, 200, 0.2);
+    }
+
+    [data-theme="light"] textarea:focus,
+    [data-theme="light"] input[type="text"]:focus {
+      box-shadow: 0 0 0 2px rgba(0, 119, 204, 0.2);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .output {
+      background-color: var(--output-bg);
+      padding: 1.25rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+      font-family: 'Fira Code', 'Courier New', monospace;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      min-height: 100px;
+      overflow-y: auto;
+      max-height: 300px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .theme-toggle, .github-link {
+      cursor: pointer;
+      font-size: 1.25rem;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.1);
+      transition: all 0.2s;
+      color: var(--text);
+    }
+
+    .theme-toggle:hover, .github-link:hover {
+      background: rgba(0, 0, 0, 0.2);
+      transform: scale(1.1);
+    }
+
+    .info {
+      font-size: 0.9rem;
+      margin-top: 2rem;
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      border-left: 4px solid var(--accent);
+    }
+
+    .info strong {
+      color: var(--accent);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .info-card {
+      background: rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+      border-top: 2px solid var(--accent);
+    }
+
+    .conversion-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .conversion-area > div {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .copied {
+      margin-left: 10px;
+      color: lime;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copied.visible {
+      opacity: 1;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .char-highlight {
+      background: rgba(0, 255, 200, 0.2);
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .container {
+        padding: 1.5rem;
+      }
+      
+      .conversion-area > div {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="app">
+    <div class="top-bar">
+      <div class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
+        <i class="fas fa-moon" id="theme-icon"></i>
+      </div>
+      <a href="https://github.com/devrafcks" target="_blank" class="github-link" title="Ver no GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    
+    <h1><i class="fas fa-language"></i> UniByte</h1>
+
+    <div class="section-title"><i class="fas fa-keyboard"></i> Texto para converter:</div>
+    <textarea id="textInput" placeholder="Digite seu texto aqui..." rows="4"></textarea>
+    
+    <div class="button-group">
+      <button onclick="converter()">
+        <i class="fas fa-exchange-alt"></i> Converter
+      </button>
+      <button onclick="copiar()">
+        <i class="far fa-copy"></i> Copiar
+      </button>
+      <span id="copiedMsg" class="copied">Copiado!</span>
+    </div>
+
+    <div class="conversion-area">
+      <div>
+        <div class="section-title"><i class="fas fa-hashtag"></i> ASCII Decimal</div>
+        <div class="output" id="asciiOutput"></div>
+      </div>
+      <div>
+        <div class="section-title"><i class="fas fa-binary"></i> Binário (8 bits)</div>
+        <div class="output" id="binaryOutput"></div>
+      </div>
+      <div>
+        <div class="section-title"><i class="fas fa-calculator"></i> Outras Bases</div>
+        <div class="output" id="extraBasesOutput"></div>
+      </div>
+    </div>
+
+    <div class="section-title"><i class="fas fa-undo"></i> Converter binário para texto:</div>
+    <input type="text" id="binInput" placeholder="Digite binário (8 bits por caractere, separado por espaços)" />
+    
+    <div class="button-group">
+      <button onclick="reverter()">
+        <i class="fas fa-undo"></i> Reverter
+      </button>
+    </div>
+    
+    <div class="output" id="revertedText"></div>
+
+    <div class="info">
+      <strong><i class="fas fa-graduation-cap"></i> Modo Educativo Avançado</strong>
+      
+      <div class="info-grid">
+        <div class="info-card">
+          <strong><i class="fas fa-binary"></i> Sistema Binário</strong>
+          <p>Cada caractere é representado por 8 bits (1 byte). Exemplo: <span class="char-highlight">A</span> → <code>01000001</code></p>
+        </div>
+        
+        <div class="info-card">
+          <strong><i class="fas fa-hashtag"></i> Tabela ASCII</strong>
+          <p>Padrão que mapeia 128 caracteres (0-127) para números. Estendido para 256 (0-255) em ISO-8859-1.</p>
+        </div>
+        
+        <div class="info-card">
+          <strong><i class="fas fa-globe"></i> Unicode</strong>
+          <p>Padrão moderno que suporta +140k caracteres usando múltiplos bytes (UTF-8, UTF-16).</p>
+        </div>
+        
+        <div class="info-card">
+          <strong><i class="fas fa-exchange-alt"></i> Conversões</strong>
+          <p>Binário → Decimal: <code>01000001</code> = 65<br>
+          Hexa: 41<br>
+          Octal: 101</p>
+        </div>
+      </div>
+      
+      <p style="margin-top: 1rem;"><strong>Como computadores processam texto:</strong> Todo texto é convertido para números binários que a CPU pode processar. Esses números são então convertidos de volta para caracteres visíveis usando tabelas de codificação.</p>
+    </div>
+  </div>
+
+  <script>
+    let isDark = true;
+
+    function toggleTheme() {
+      document.documentElement.setAttribute("data-theme", isDark ? "light" : "dark");
+      const icon = document.getElementById("theme-icon");
+      
+      if (isDark) {
+        icon.classList.replace("fa-moon", "fa-sun");
+      } else {
+        icon.classList.replace("fa-sun", "fa-moon");
+      }
+      
+      isDark = !isDark;
+    }
+
+    function converter() {
+      const input = document.getElementById("textInput").value;
+      const asciiOutput = [];
+      const binaryOutput = [];
+      const extraBases = [];
+
+      input.split("").forEach(char => {
+        const code = char.charCodeAt(0);
+        const bin = code.toString(2).padStart(8, "0");
+        const hex = code.toString(16).toUpperCase().padStart(2, "0");
+        const oct = code.toString(8).padStart(3, "0");
+        
+        asciiOutput.push(`${char} → Dec: ${code.toString().padStart(3, " ")}`);
+        binaryOutput.push(`${char} → Bin: ${bin}`);
+        extraBases.push(`${char} → Hex: 0x${hex} | Oct: 0${oct}`);
+      });
+
+      animateText("asciiOutput", asciiOutput.join("\n"));
+      animateText("binaryOutput", binaryOutput.join("\n"));
+      animateText("extraBasesOutput", extraBases.join("\n"));
+    }
+
+    function copiar() {
+      const binText = document.getElementById("binaryOutput").textContent;
+      navigator.clipboard.writeText(binText).then(() => {
+        const msg = document.getElementById("copiedMsg");
+        msg.classList.add("visible");
+        setTimeout(() => msg.classList.remove("visible"), 2000);
+      });
+    }
+
+    function reverter() {
+      const binInput = document.getElementById("binInput").value.trim();
+      const binChunks = binInput.includes(" ") ? binInput.split(" ") : [binInput];
+      let result = "";
+      
+      try {
+        binChunks.forEach(bin => {
+          const cleanBin = bin.replace(/[^01]/g, "");
+          if (cleanBin.length > 0) {
+            const code = parseInt(cleanBin.slice(0, 8).padEnd(8, "0"), 2);
+            if (!isNaN(code)) result += String.fromCharCode(code);
+          }
+        });
+      } catch (e) {
+        result = "[Erro na conversão]";
+      }
+      
+      animateText("revertedText", result || "[Nenhum binário válido]");
+    }
+
+    function animateText(id, text) {
+      const el = document.getElementById(id);
+      el.textContent = "";
+      let i = 0;
+      const speed = text.length > 100 ? 0 : (text.length > 50 ? 2 : 4);
+      
+      function addChar() {
+        if (i < text.length) {
+          el.textContent += text[i];
+          i++;
+          setTimeout(addChar, speed);
+        }
+      }
+      
+      addChar();
+    }
+  </script>
+</body>
+</html>
