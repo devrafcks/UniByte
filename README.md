@@ -30,11 +30,11 @@ Ao inserir uma sequência de binário (8 bits por caractere, separado por espaç
 O projeto também suporta a conversão de binário para outras bases numéricas, como **Decimal**, **Hexadecimal** e **Octal**.
 
 ---
+## Acesse
 
-## 🎥 Demonstração
-Clique na imagem para assistir ao vídeo:
-[![Clique para assistir ao vídeo](https://github.com/user-attachments/assets/b73df183-91f0-4864-8f35-f551f5f837ae)](https://github.com/devrafcks/UniByte/blob/main/Projeto%20-%20video.mp4)
+![Clique para acessar o site](https://github.com/user-attachments/assets/20fa0191-6083-4842-9066-4b878b98a258)
 
+[Visite o site aqui](https://unibyte-gray.vercel.app/)
 
 ---
 
